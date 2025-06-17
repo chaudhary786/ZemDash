@@ -50,6 +50,7 @@ export function AdminFilterControls({
   onSearchChange,
 }: AdminFilterControlsProps) {
   const [isExpanded, setIsExpanded] = useState(false)
+  const [selectedAdmin, setSelectedAdmin] = useState<string | undefined>(filters.name)
 
   const updateFilter = (key: keyof FilterOptions, value: any) => {
     onFiltersChange({ ...filters, [key]: value })
@@ -76,13 +77,13 @@ export function AdminFilterControls({
   }
 
   return (
-    <Card className="glass-card border-0">
+    <Card className="bg-white rounded-lg shadow-sm">
       <CardHeader>
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="flex items-center space-x-2">
-              <Filter className="h-5 w-5 text-blue-600" />
-              <CardTitle className="text-gray-900 dark:text-white">Filters & Export</CardTitle>
+              <Filter className="h-5 w-5 text-blue-500" />
+              <CardTitle className="text-gray-700">Filters</CardTitle>
             </div>
             {hasActiveFilters && (
               <Badge variant="secondary" className="text-xs">
@@ -92,10 +93,10 @@ export function AdminFilterControls({
           </div>
           <div className="flex items-center space-x-2">
             <Button
-              variant="ghost"
+              variant="outline"
               size="icon"
               onClick={() => setIsExpanded(!isExpanded)}
-              className="h-8 w-8 text-gray-600 dark:text-gray-300"
+              className="h-8 w-8 text-blue-500 border-blue-200 hover:bg-blue-50 hover:text-blue-600"
             >
               {isExpanded ? (
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -118,27 +119,53 @@ export function AdminFilterControls({
       </CardHeader>
 
       <CardContent className="space-y-4">
+        {/* Admin Dropdown */}
+        <div className="mb-4">
+          <Select
+            value={selectedAdmin || "all"}
+            onValueChange={(value) => {
+              setSelectedAdmin(value === "all" ? undefined : value);
+              updateFilter("name", value === "all" ? undefined : value);
+            }}
+          >
+            <SelectTrigger className="bg-white border-gray-200 hover:border-gray-300">
+              <SelectValue placeholder="Select Admin" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Admins</SelectItem>
+              {ADMIN_USERS.map((admin) => (
+                <SelectItem key={admin.value} value={admin.value}>
+                  <div className="flex items-center space-x-2">
+                    <Users className="h-3 w-3 text-gray-500" />
+                    <span>{admin.label}</span>
+                  </div>
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        
         {/* Enhanced Search and Quick Filters */}
-        <div className="space-y-4">
+        {isExpanded && <div className="space-y-4">
           {/* Dynamic Search */}
-          <div className="relative">
+          <div className="relative w-full">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
             <Input
-              placeholder="Search by admin name, category, description, or amount..."
+              placeholder="Search transactions..."
               value={searchTerm}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="pl-10 bg-white/50 dark:bg-gray-800/50 border-white/30 dark:border-gray-700/30"
+              className="pl-10 bg-white border-gray-200 focus-visible:ring-1 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
             />
           </div>
 
           {/* Quick Filter Buttons */}
-          <div className="grid gap-3 grid-cols-2 sm:grid-cols-5">
+          <div className="grid gap-3 grid-cols-2 sm:grid-cols-3">
             <Select
               value={filters.type || "all"}
               onValueChange={(value) => updateFilter("type", value === "all" ? undefined : value)}
             >
-              <SelectTrigger className="bg-white/50 dark:bg-gray-800/50">
-                <SelectValue placeholder="Type" />
+              <SelectTrigger className="bg-white border-gray-200 hover:border-gray-300">
+                <SelectValue placeholder="All Types" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Types</SelectItem>
@@ -158,31 +185,11 @@ export function AdminFilterControls({
             </Select>
 
             <Select
-              value={filters.name || "all"}
-              onValueChange={(value) => updateFilter("name", value === "all" ? undefined : value)}
-            >
-              <SelectTrigger className="bg-white/50 dark:bg-gray-800/50">
-                <SelectValue placeholder="Name" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Names</SelectItem>
-                {ADMIN_USERS.map((admin) => (
-                  <SelectItem key={admin.value} value={admin.value}>
-                    <div className="flex items-center space-x-2">
-                      <Users className="h-3 w-3" />
-                      <span>{admin.label}</span>
-                    </div>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select
               value={filters.year?.toString() || "all"}
               onValueChange={(value) => updateFilter("year", value === "all" ? undefined : Number.parseInt(value))}
             >
-              <SelectTrigger className="bg-white/50 dark:bg-gray-800/50">
-                <SelectValue placeholder="Year" />
+              <SelectTrigger className="bg-white border-gray-200 hover:border-gray-300">
+                <SelectValue placeholder="All Years" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Years</SelectItem>
@@ -198,8 +205,8 @@ export function AdminFilterControls({
               value={filters.month?.toString() || "all"}
               onValueChange={(value) => updateFilter("month", value === "all" ? undefined : Number.parseInt(value))}
             >
-              <SelectTrigger className="bg-white/50 dark:bg-gray-800/50">
-                <SelectValue placeholder="Month" />
+              <SelectTrigger className="bg-white border-gray-200 hover:border-gray-300">
+                <SelectValue placeholder="All Months" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Months</SelectItem>
@@ -216,23 +223,28 @@ export function AdminFilterControls({
                 variant="outline"
                 size="sm"
                 onClick={onExportPDF}
-                className="flex-1 bg-white/50 dark:bg-gray-800/50"
+                className="flex-1 bg-white border-gray-200 hover:bg-gray-50"
               >
                 <Download className="h-4 w-4 mr-1" />
-                PDF
+                Export PDF
               </Button>
-              <Button variant="outline" size="sm" onClick={onPrint} className="flex-1 bg-white/50 dark:bg-gray-800/50">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={onPrint} 
+                className="flex-1 bg-white border-gray-200 hover:bg-gray-50"
+              >
                 <Printer className="h-4 w-4 mr-1" />
                 Print
               </Button>
             </div>
           </div>
-        </div>
+        </div>}
 
         {/* Active Filters Display */}
-        {hasActiveFilters && (
-          <div className="flex flex-wrap gap-2 p-3 rounded-lg bg-white/20 dark:bg-gray-800/20">
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Active filters:</span>
+        {hasActiveFilters && isExpanded && (
+          <div className="flex flex-wrap gap-2 p-3 rounded-lg bg-white/20">
+            <span className="text-sm font-medium text-gray-700">Active filters:</span>
 
             {searchTerm.trim() !== "" && (
               <Badge variant="secondary" className="flex items-center space-x-1">
@@ -259,12 +271,15 @@ export function AdminFilterControls({
               </Badge>
             )}
 
-            {filters.adminName && (
+            {filters.name && (
               <Badge variant="secondary" className="flex items-center space-x-1">
-                <span>Admin: {ADMIN_USERS.find((a) => a.value === filters.adminName)?.label}</span>
+                <span>{ADMIN_USERS.find((a) => a.value === filters.name)?.label}</span>
                 <button
-                  onClick={() => updateFilter("adminName", undefined)}
-                  className="ml-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-full p-0.5"
+                  onClick={() => {
+                    updateFilter("name", undefined);
+                    setSelectedAdmin(undefined);
+                  }}
+                  className="ml-1 hover:bg-gray-200 rounded-full p-0.5"
                 >
                   <X className="h-3 w-3" />
                 </button>
@@ -311,13 +326,13 @@ export function AdminFilterControls({
 
         {/* Expanded Filters */}
         {isExpanded && (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 pt-4 border-t border-white/20 dark:border-gray-700/20">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 pt-4 border-t border-gray-200">
             <Select
               value={filters.category || "all"}
               onValueChange={(value) => updateFilter("category", value === "all" ? undefined : value)}
             >
-              <SelectTrigger className="bg-white/50 dark:bg-gray-800/50">
-                <SelectValue placeholder="Category" />
+              <SelectTrigger className="bg-white border-gray-200 hover:border-gray-300">
+                <SelectValue placeholder="All Categories" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Categories</SelectItem>
@@ -333,7 +348,7 @@ export function AdminFilterControls({
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
-                  className="justify-start text-left font-normal bg-white/50 dark:bg-gray-800/50"
+                  className="justify-start text-left font-normal bg-white border-gray-200 hover:bg-gray-50"
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />
                   {filters.dateRange?.start
@@ -362,13 +377,13 @@ export function AdminFilterControls({
               </PopoverContent>
             </Popover>
 
-            <div className="flex items-center justify-between p-3 rounded-lg bg-white/30 dark:bg-gray-800/30">
+            <div className="flex items-center justify-between p-3 rounded bg-blue-50">
               <div>
-                <p className="text-sm font-medium text-gray-900 dark:text-white">Results</p>
-                <p className="text-xs text-gray-600 dark:text-gray-300">Filtered transactions</p>
+                <p className="text-sm font-medium text-gray-700">Results</p>
+                <p className="text-xs text-gray-500">Filtered transactions</p>
               </div>
               <div className="text-right">
-                <p className="text-lg font-bold text-gray-900 dark:text-white">{transactionCount}</p>
+                <p className="text-lg font-bold text-gray-800">{transactionCount}</p>
               </div>
             </div>
           </div>
