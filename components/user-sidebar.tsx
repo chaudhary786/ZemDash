@@ -15,6 +15,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
+  useSidebar,
 } from "@/components/ui/sidebar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -59,10 +60,11 @@ const userMenuItems = [
 
 export function UserSidebar() {
   const pathname = usePathname()
+  const { isMobile } = useSidebar()
 
   return (
-    <Sidebar className="glass-sidebar border-0">
-      <SidebarHeader className="p-4">
+    <Sidebar className="glass-sidebar border-0 z-50">
+      <SidebarHeader className="p-4 sticky top-0 z-10" data-sidebar="header">
         <div className="flex items-center space-x-2">
           <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-blue-600 rounded-lg flex items-center justify-center">
             <span className="text-white font-bold text-sm">Z</span>
@@ -74,17 +76,18 @@ export function UserSidebar() {
         </div>
       </SidebarHeader>
 
-      <SidebarContent className="px-2">
+      <SidebarContent className="px-2 overflow-y-auto">
         <SidebarGroup>
           <SidebarGroupLabel className="text-gray-600 dark:text-gray-300 font-medium">Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {userMenuItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
+                <SidebarMenuItem key={item.title} data-sidebar="menu-item">
                   <SidebarMenuButton
                     asChild
                     isActive={pathname === item.url}
-                    className="w-full justify-start hover:bg-white/20 dark:hover:bg-gray-800/20"
+                    className="w-full justify-start hover:bg-white/20 dark:hover:bg-gray-800/20 py-2.5 md:py-2"
+                    data-sidebar="menu-button"
                   >
                     <Link href={item.url} className="flex items-center space-x-2">
                       <item.icon className="h-4 w-4" />
@@ -98,7 +101,7 @@ export function UserSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-4">
+      <SidebarFooter className="p-4 sticky bottom-0 z-10 bg-inherit border-t border-white/10 dark:border-gray-700/10">
         <SidebarMenu>
           <SidebarMenuItem>
             <DropdownMenu>

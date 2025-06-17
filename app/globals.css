@@ -84,7 +84,43 @@
   }
 
   .glass-sidebar {
-    @apply bg-white/10 backdrop-blur-xl border-r border-white/20;
+    @apply bg-white/40 backdrop-blur-xl border-r border-white/30 shadow-md;
+    background-image: linear-gradient(to bottom right, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3));
+  }
+  
+  /* Base styling for sidebar menu items */
+  [data-sidebar="menu-button"] {
+    @apply rounded-md transition-all duration-200;
+  }
+  
+  /* Active state for menu items */
+  [data-sidebar="menu-button"][data-active="true"] {
+    @apply bg-blue-500/20 text-blue-700 font-medium;
+    background-image: linear-gradient(to right, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.1));
+  }
+  
+  /* Mobile-specific sidebar styling */
+  @media (max-width: 768px) {
+    .glass-sidebar {
+      @apply bg-white/80 backdrop-blur-xl border-r border-white/40 shadow-lg;
+      background-image: linear-gradient(to bottom right, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.75));
+    }
+    
+    /* Improve touch targets on mobile */
+    [data-sidebar="menu-button"] {
+      @apply py-3 px-4 hover:bg-black/5 transition-colors duration-200;
+    }
+    
+    /* Add more space between menu items for touch */
+    [data-sidebar="menu-item"] {
+      @apply my-1;
+    }
+    
+    /* Make sidebar header more prominent */
+    [data-sidebar="header"] {
+      @apply shadow-sm bg-white/50 backdrop-blur-lg;
+      background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+    }
   }
 
   .glass-header {
@@ -100,7 +136,38 @@
   }
 
   .dark .glass-sidebar {
-    @apply bg-gray-900/10 border-gray-700/20 backdrop-blur-xl;
+    @apply bg-gray-900/50 border-gray-700/30 backdrop-blur-xl shadow-lg;
+    background-image: linear-gradient(to bottom right, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.6));
+  }
+  
+  /* Dark mode mobile-specific sidebar styling */
+  @media (max-width: 768px) {
+    .dark .glass-sidebar {
+      @apply bg-gray-900/80 border-gray-700/40 backdrop-blur-xl shadow-lg;
+      background-image: linear-gradient(to bottom right, rgba(30, 41, 59, 0.85), rgba(15, 23, 42, 0.75));
+    }
+    
+    /* Improve dark mode touch targets on mobile */
+    .dark [data-sidebar="menu-button"] {
+      @apply py-3 px-4 text-gray-100 hover:bg-white/10 transition-colors duration-200;
+    }
+    
+    /* Add more space between menu items for touch in dark mode */
+    .dark [data-sidebar="menu-item"] {
+      @apply my-1;
+    }
+    
+    /* Make dark mode sidebar header more prominent */
+    .dark [data-sidebar="header"] {
+      @apply shadow-md shadow-black/20 bg-gray-900/60 backdrop-blur-lg;
+      background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.7));
+    }
+    
+    /* Improve contrast for active items in dark mode */
+    .dark [data-sidebar="menu-button"][data-active="true"] {
+      @apply bg-blue-600/40 text-white font-medium shadow-sm;
+      background-image: linear-gradient(to right, rgba(37, 99, 235, 0.4), rgba(37, 99, 235, 0.2));
+    }
   }
 
   .dark .glass-header {
