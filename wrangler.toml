@@ -1,0 +1,23 @@
+# Cloudflare Pages configuration
+name = "zemdashdashboard"
+compatibility_date = "2024-06-13"
+pages_build_output_dir = ".vercel/output/static"
+
+# Enable Node.js compatibility
+compatibility_flags = ["nodejs_compat"]
+
+# Environment variables for all environments
+[vars]
+  NODE_VERSION = "20"
+
+# Production environment
+[env.production]
+  compatibility_flags = ["nodejs_compat"]
+  [env.production.vars]
+    NODE_ENV = "production"
+
+# Preview environment (used for all non-production deployments)
+[env.preview]
+  compatibility_flags = ["nodejs_compat"]
+  [env.preview.vars]
+    NODE_ENV = "development"

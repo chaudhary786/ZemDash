@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "include": ["/*"],
+  "exclude": ["/_next/static/*", "/static/*"],
+  "headers": {
+    "/*": {
+      "x-frame-options": "SAMEORIGIN",
+      "x-content-type-options": "nosniff",
+      "x-xss-protection": "1; mode=block"
+    }
+  },
+  "compatibilityFlags": ["nodejs_compat"]
+}
