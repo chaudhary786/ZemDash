@@ -11,6 +11,7 @@ import { AdminFilterControls } from "@/components/admin/admin-filter-controls"
 import { FinancialSummaryComponent } from "@/components/finance/financial-summary"
 import { FinancialHealthScoreCard } from "@/components/finance/financial-health-score-card"
 import { TotalTransactionsCard } from "@/components/finance/total-transactions-card"
+import { TransactionTrendsCard } from "@/components/finance/transaction-trends-card"
 import { format } from "date-fns"
 import type { Transaction, FilterOptions, FinancialSummary } from "@/types/finance"
 import { ADMIN_USERS } from "@/types/finance"
@@ -134,6 +135,9 @@ export default function AdminFinancePage() {
     direction: "asc" | "desc"
   }>({ key: null, direction: "asc" })
   const [searchTerm, setSearchTerm] = useState("")
+  
+  // Add decorative blob animation CSS class
+  const blobAnimation = "animate-pulse-slow"
 
   // Enhanced filter transactions with search functionality
   const filteredTransactions = useMemo(() => {
@@ -163,7 +167,7 @@ export default function AdminFinancePage() {
       if (filters.type && transaction.type !== filters.type) return false
 
       // Admin filter (specific to admin dashboard)
-      if (filters.adminId && transaction.name !== filters.adminId) return false
+      if (filters.name && transaction.name !== filters.name) return false
 
       // Category filter
       if (filters.category && transaction.category !== filters.category) return false
@@ -451,30 +455,42 @@ export default function AdminFinancePage() {
   return (
     <div className="space-y-6 max-w-full">
       {/* Header */}
-      <div className="glass-card rounded-xl p-6">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+      <div className="glass-finance-card rounded-xl p-6 relative overflow-hidden">
+        {/* Decorative gradient blobs */}
+        <div className="absolute -top-24 -right-24 w-48 h-48 rounded-full bg-gradient-to-br from-blue-200/30 to-purple-300/30 blur-2xl dark:from-blue-900/20 dark:to-purple-800/20"></div>
+        <div className="absolute -bottom-20 -left-20 w-40 h-40 rounded-full bg-gradient-to-tr from-pink-200/20 to-blue-300/20 blur-2xl dark:from-pink-900/10 dark:to-blue-800/10"></div>
+        
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 relative z-10">
           <div className="flex-1">
             <div className="flex items-center space-x-3 mb-2">
-              <Shield className="h-6 w-6 text-blue-600" />
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Finance Management</h1>
+              <div className="rounded-full p-2 bg-gradient-to-br from-blue-100/80 to-purple-100/80 dark:from-blue-900/30 dark:to-purple-900/30 backdrop-blur-sm shadow-sm">
+                <Shield className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              </div>
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 text-transparent bg-clip-text">Finance Management</h1>
             </div>
-            <div className="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-300">
-              <div className="flex items-center space-x-2">
-                <Calendar className="h-4 w-4" />
+            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-300 mt-2">
+              <div className="flex items-center space-x-2 bg-white/30 dark:bg-gray-800/30 px-3 py-1 rounded-full backdrop-blur-sm">
+                <Calendar className="h-4 w-4 text-blue-500 dark:text-blue-400" />
                 <span>{getSelectedPeriod()}</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <Users className="h-4 w-4" />
+              <div className="flex items-center space-x-2 bg-white/30 dark:bg-gray-800/30 px-3 py-1 rounded-full backdrop-blur-sm">
+                <Users className="h-4 w-4 text-blue-500 dark:text-blue-400" />
                 <span>System-wide Transactions</span>
               </div>
             </div>
           </div>
-          <div className="flex space-x-2">
-            <Button variant="outline" className="bg-white/50 dark:bg-gray-800/50">
-              <BarChart3 className="h-4 w-4 mr-2" />
-              Reports
+          <div className="flex space-x-3">
+            <Button 
+              variant="outline" 
+              className="backdrop-blur-sm bg-gradient-to-r from-blue-50/80 to-purple-50/80 dark:from-blue-900/20 dark:to-purple-900/20 border-white/20 dark:border-gray-700/30 hover:bg-white/80 dark:hover:bg-gray-700/80 shadow-sm transition-all duration-200"
+            >
+              <BarChart3 className="h-4 w-4 mr-2 text-blue-600 dark:text-blue-400" />
+              <span className="text-gray-700 dark:text-gray-200">Reports</span>
             </Button>
-            <Button className="bg-blue-600 hover:bg-blue-700" onClick={handleCreateTransaction}>
+            <Button 
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 border-0 shadow-md hover:shadow-lg transition-all duration-200" 
+              onClick={handleCreateTransaction}
+            >
               <Plus className="h-4 w-4 mr-2" />
               Add Transaction
             </Button>
@@ -484,7 +500,7 @@ export default function AdminFinancePage() {
 
       {/* Financial Summary */}
       {/* Financial Health and Transactions Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         <FinancialHealthScoreCard 
           score={financialSummary.totalIncome > 0 ? Math.min(100, Math.round((financialSummary.netBalance / financialSummary.totalIncome) * 100)) : 0} 
           label={financialSummary.netBalance >= 0 ? "Positive" : "Negative"} 
@@ -492,6 +508,10 @@ export default function AdminFinancePage() {
         <TotalTransactionsCard 
           count={sortedTransactions.length} 
           changePercentage={8.3} 
+        />
+        <TransactionTrendsCard 
+          weeklyTrends={[5, 8, 3, -2, 6, 9, 4]} 
+          monthlyTrend="+15% growth trend"
         />
       </div>
       
@@ -509,23 +529,27 @@ export default function AdminFinancePage() {
       />
 
       {/* Transactions Table */}
-      <Card className="glass-card border-0">
-        <CardHeader>
+      <Card className="glass-finance-card backdrop-blur-xl border-0 relative overflow-hidden">
+        {/* Decorative gradient blobs */}
+        <div className="absolute -top-32 -left-32 w-64 h-64 rounded-full bg-gradient-to-br from-blue-200/20 to-purple-300/20 blur-3xl dark:from-blue-900/20 dark:to-purple-800/20"></div>
+        <div className="absolute -bottom-32 -right-32 w-64 h-64 rounded-full bg-gradient-to-tr from-pink-200/20 to-blue-300/20 blur-3xl dark:from-pink-900/10 dark:to-blue-800/10"></div>
+        
+        <CardHeader className="relative z-10 border-b border-white/10 dark:border-gray-700/20">
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="text-gray-900 dark:text-white">Transaction History</CardTitle>
+              <CardTitle className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 text-transparent bg-clip-text">Transaction History</CardTitle>
               <CardDescription className="text-gray-600 dark:text-gray-300">
                 System-wide transaction management
               </CardDescription>
             </div>
-            <Badge variant="secondary" className="text-sm">
+            <Badge variant="secondary" className="text-sm bg-white/40 dark:bg-gray-800/40 text-gray-700 dark:text-gray-300 backdrop-blur-sm border border-white/20 dark:border-gray-700/20">
               {filteredTransactions.length} transactions
             </Badge>
           </div>
         </CardHeader>
-        <CardContent>
-          <div className="rounded-lg overflow-hidden bg-white/30 dark:bg-gray-800/30">
-            <Table>
+        <CardContent className="relative z-10">
+          <div className="rounded-lg overflow-hidden backdrop-blur-xl bg-white/40 dark:bg-gray-800/30 border border-white/10 dark:border-gray-700/10 shadow-inner">
+            <Table className="[&_tr:hover]:bg-white/10 dark:[&_tr:hover]:bg-gray-800/20 [&_th]:text-gray-600 dark:[&_th]:text-gray-300 [&_th]:font-medium">
               <TableHeader>
                 <TableRow className="border-white/20 dark:border-gray-700/20">
                   <TableHead
@@ -551,22 +575,15 @@ export default function AdminFinancePage() {
               </TableHeader>
               <TableBody>
                 {sortedTransactions.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={7} className="text-center py-8">
-                      <div className="flex flex-col items-center space-y-2">
-                        <FileText className="h-8 w-8 text-gray-400" />
-                        <p className="text-gray-600 dark:text-gray-300">No transactions found</p>
-                        <Button variant="outline" onClick={handleCreateTransaction} className="mt-2">
-                          <Plus className="h-4 w-4 mr-2" />
-                          Add first transaction
-                        </Button>
-                      </div>
+                  <TableRow className="border-white/20 dark:border-gray-700/20">
+                    <TableCell colSpan={7} className="text-center text-gray-500 dark:text-gray-400 py-8">
+                      No transactions found
                     </TableCell>
                   </TableRow>
                 ) : (
                   sortedTransactions.map((transaction) => (
-                    <TableRow key={transaction.id} className="border-white/20 dark:border-gray-700/20">
-                      <TableCell className="font-medium text-gray-900 dark:text-white">
+                    <TableRow key={transaction.id} className="border-white/20 dark:border-gray-700/20 hover:bg-white/10 dark:hover:bg-gray-800/20 transition-colors backdrop-blur-sm">
+                      <TableCell className="text-gray-700 dark:text-gray-300">
                         {format(transaction.date, "dd.MM.yyyy")}
                       </TableCell>
                       <TableCell className="text-gray-700 dark:text-gray-300">{transaction.day}</TableCell>
@@ -593,7 +610,7 @@ export default function AdminFinancePage() {
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center space-x-2">
-                          <div className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/20 flex items-center justify-center">
+                          <div className="w-6 h-6 rounded-full bg-blue-100/80 dark:bg-blue-900/30 flex items-center justify-center backdrop-blur-sm">
                             <span className="text-xs font-medium text-blue-600 dark:text-blue-400">
                               {getAdminLabel(transaction.name)
                                 .split(" ")

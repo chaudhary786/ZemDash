@@ -70,33 +70,135 @@
 }
 
 @layer components {
+  /* Enhanced Glassmorphism Cards */
   .glass-card {
-    @apply bg-white/20 backdrop-blur-md border border-white/30 shadow-lg;
+    @apply backdrop-blur-xl border border-white/30 shadow-lg rounded-xl;
+    background: linear-gradient(135deg, rgba(238, 243, 254, 0.65), rgba(251, 247, 255, 0.65), rgba(255, 255, 255, 0.7));
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+  }
+  
+  .dark .glass-card {
+    @apply backdrop-blur-xl border border-gray-700/30 shadow-lg;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.65), rgba(15, 23, 42, 0.65));
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
   }
   
   .finance-card {
-    @apply bg-white/40 dark:bg-gray-800/40 backdrop-blur-md border-0 shadow-sm hover:shadow-md transition-all duration-200;
+    @apply backdrop-blur-md border-0 shadow-sm hover:shadow-md transition-all duration-200;
     @apply border-t border-white/20 dark:border-gray-700/20;
+    background: linear-gradient(135deg, rgba(238, 243, 254, 0.6), rgba(251, 247, 255, 0.6));
+  }
+  
+  .dark .finance-card {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.6));
+  }
+  
+  /* Enhanced Admin dashboard glass components */
+  .glass-stats-card {
+    @apply backdrop-blur-xl border border-white/20 shadow-md rounded-xl overflow-hidden;
+    background: linear-gradient(135deg, rgba(238, 243, 254, 0.7), rgba(251, 247, 255, 0.7), rgba(255, 255, 255, 0.75));
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+  }
+  
+  .dark .glass-stats-card {
+    @apply border-gray-700/20;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.7));
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  }
+  
+  /* Finance-specific glass components */
+  .glass-finance-card {
+    @apply backdrop-blur-xl border border-white/20 shadow-md rounded-xl overflow-hidden;
+    background: linear-gradient(135deg, rgba(238, 243, 254, 0.75), rgba(251, 247, 255, 0.75), rgba(255, 255, 255, 0.8));
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  }
+  
+  .dark .glass-finance-card {
+    @apply border-gray-700/20;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.75), rgba(15, 23, 42, 0.75));
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
+  }
+  
+  .glass-health-score {
+    @apply backdrop-blur-xl border border-white/20 shadow-md rounded-xl overflow-hidden;
+    background: linear-gradient(135deg, rgba(238, 243, 254, 0.85), rgba(251, 247, 255, 0.85));
+    box-shadow: 0 10px 30px 0 rgba(31, 38, 135, 0.12);
+  }
+  
+  .dark .glass-health-score {
+    @apply border-gray-700/20;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.85), rgba(15, 23, 42, 0.85));
+    box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.2);
+  }
+  
+  .glass-transactions-card {
+    @apply backdrop-blur-xl border border-white/20 shadow-md rounded-xl overflow-hidden;
+    background: linear-gradient(135deg, rgba(238, 243, 254, 0.8), rgba(251, 247, 255, 0.8));
+    box-shadow: 0 8px 25px 0 rgba(31, 38, 135, 0.1);
+  }
+  
+  .dark .glass-transactions-card {
+    @apply border-gray-700/20;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.8));
+    box-shadow: 0 8px 25px 0 rgba(0, 0, 0, 0.18);
+  }
+  
+  .glass-admin-filters {
+    @apply backdrop-blur-xl border border-white/20 shadow-md rounded-xl overflow-hidden;
+    background: linear-gradient(135deg, rgba(238, 243, 254, 0.7), rgba(251, 247, 255, 0.7), rgba(255, 255, 255, 0.75));
+    box-shadow: 0 6px 20px 0 rgba(31, 38, 135, 0.08);
+  }  
+  
+  .dark .glass-admin-filters {
+    @apply border-gray-700/20;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.7));
+    box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.15);
+  }
+  
+  .glass-metric-item {
+    @apply backdrop-blur-sm rounded-lg transition-all duration-200;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3));
+    box-shadow: 0 2px 12px 0 rgba(31, 38, 135, 0.08);
+  }
+  
+  .dark .glass-metric-item {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.5), rgba(15, 23, 42, 0.3));
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.15);
+  }
+  
+  .glass-transaction-item {
+    @apply backdrop-blur-sm rounded-lg transition-all duration-200;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.2));
+    box-shadow: 0 2px 8px 0 rgba(31, 38, 135, 0.06);
+  }
+  
+  .dark .glass-transaction-item {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.4), rgba(15, 23, 42, 0.2));
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
   }
   
   .finance-card-gradient {
     @apply bg-gradient-to-br from-white/50 to-white/30 dark:from-gray-800/50 dark:to-gray-800/30;
   }
 
+  /* Enhanced Glassmorphism Sidebar */
   .glass-sidebar {
-    @apply bg-white/40 backdrop-blur-xl border-r border-white/30 shadow-md;
-    background-image: linear-gradient(to bottom right, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3));
+    @apply bg-white/30 backdrop-blur-xl border-r border-white/30 shadow-md;
+    background-image: linear-gradient(to bottom right, rgba(238, 243, 254, 0.7), rgba(251, 247, 255, 0.5), rgba(255, 255, 255, 0.6));
+    box-shadow: 0 4px 24px 0 rgba(31, 38, 135, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.3);
   }
   
-  /* Base styling for sidebar menu items */
+  /* Enhanced styling for sidebar menu items */
   [data-sidebar="menu-button"] {
-    @apply rounded-md transition-all duration-200;
+    @apply rounded-md transition-all duration-200 backdrop-blur-sm;
+    background: rgba(255, 255, 255, 0.1);
   }
   
-  /* Active state for menu items */
+  /* Enhanced active state for menu items */
   [data-sidebar="menu-button"][data-active="true"] {
-    @apply bg-blue-500/20 text-blue-700 font-medium;
-    background-image: linear-gradient(to right, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.1));
+    @apply bg-blue-500/20 text-blue-700 font-medium backdrop-blur-md;
+    background-image: linear-gradient(to right, rgba(59, 130, 246, 0.25), rgba(59, 130, 246, 0.1));
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.25);
   }
   
   /* Mobile-specific sidebar styling */
@@ -123,8 +225,11 @@
     }
   }
 
+  /* Enhanced Glassmorphism Header */
   .glass-header {
-    @apply bg-white/30 backdrop-blur-lg border-b border-white/20;
+    @apply bg-white/25 backdrop-blur-lg border-b border-white/25;
+    background-image: linear-gradient(to right, rgba(238, 243, 254, 0.6), rgba(251, 247, 255, 0.5), rgba(255, 255, 255, 0.6));
+    box-shadow: 0 4px 12px -2px rgba(31, 38, 135, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.25);
   }
 
   .glass-footer {
@@ -135,21 +240,24 @@
     @apply bg-gray-900/20 border-gray-700/30 backdrop-blur-md shadow-lg shadow-gray-900/10;
   }
 
+  /* Enhanced Dark Mode Glassmorphism Sidebar */
   .dark .glass-sidebar {
-    @apply bg-gray-900/50 border-gray-700/30 backdrop-blur-xl shadow-lg;
-    background-image: linear-gradient(to bottom right, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.6));
+    @apply bg-gray-900/40 border-gray-700/30 backdrop-blur-xl shadow-lg;
+    background-image: linear-gradient(to bottom right, rgba(30, 41, 59, 0.65), rgba(15, 23, 42, 0.55));
+    box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
   }
   
   /* Dark mode mobile-specific sidebar styling */
   @media (max-width: 768px) {
     .dark .glass-sidebar {
-      @apply bg-gray-900/80 border-gray-700/40 backdrop-blur-xl shadow-lg;
-      background-image: linear-gradient(to bottom right, rgba(30, 41, 59, 0.85), rgba(15, 23, 42, 0.75));
+      @apply bg-gray-900/90 border-gray-700/60 backdrop-blur-xl shadow-lg;
+      background-image: linear-gradient(to bottom right, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.85));
     }
     
     /* Improve dark mode touch targets on mobile */
     .dark [data-sidebar="menu-button"] {
-      @apply py-3 px-4 text-gray-100 hover:bg-white/10 transition-colors duration-200;
+      @apply py-3 px-4 text-gray-100 hover:bg-white/15 transition-all duration-200 backdrop-blur-sm;
+      background: rgba(255, 255, 255, 0.05);
     }
     
     /* Add more space between menu items for touch in dark mode */
@@ -159,19 +267,23 @@
     
     /* Make dark mode sidebar header more prominent */
     .dark [data-sidebar="header"] {
-      @apply shadow-md shadow-black/20 bg-gray-900/60 backdrop-blur-lg;
-      background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.7));
+      @apply shadow-md shadow-black/30 bg-gray-900/80 backdrop-blur-lg;
+      background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.8));
     }
     
     /* Improve contrast for active items in dark mode */
     .dark [data-sidebar="menu-button"][data-active="true"] {
-      @apply bg-blue-600/40 text-white font-medium shadow-sm;
-      background-image: linear-gradient(to right, rgba(37, 99, 235, 0.4), rgba(37, 99, 235, 0.2));
+      @apply bg-blue-600/50 text-white font-medium shadow-sm backdrop-blur-md;
+      background-image: linear-gradient(to right, rgba(37, 99, 235, 0.5), rgba(37, 99, 235, 0.3));
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.15);
     }
   }
 
+  /* Enhanced Dark Mode Glassmorphism Header */
   .dark .glass-header {
-    @apply bg-gray-900/30 border-gray-700/20 backdrop-blur-lg;
+    @apply bg-gray-900/25 border-gray-700/25 backdrop-blur-lg;
+    background-image: linear-gradient(to right, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.5));
+    box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
   }
 
   .dark .glass-footer {
@@ -219,5 +331,66 @@
   /* Card responsive */
   .card-responsive {
     @apply w-full min-w-0;
+  }
+  
+  /* Admin sidebar specific styles */
+  .admin-layout {
+    @apply flex w-full h-screen overflow-hidden;
+  }
+  
+  .admin-main-content {
+    @apply flex-1 flex flex-col min-w-0 w-full transition-all duration-300;
+  }
+  
+  @media (min-width: 1024px) {
+    .admin-main-content {
+      @apply pl-[260px];
+    }
+  }
+  
+  /* Mobile sidebar overlay */
+  .sidebar-overlay {
+    @apply fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    visibility: hidden;
+  }
+  
+  .sidebar-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+  }
+  
+  /* Sidebar styling and transitions */
+  .glass-sidebar {
+    @apply z-50 transition-transform duration-300 shadow-lg bg-white/70 dark:bg-gray-900/80;
+    width: 260px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  /* Always show sidebar on desktop */
+  @media (min-width: 1024px) {
+    .glass-sidebar {
+      @apply fixed left-0 top-0 h-screen transform translate-x-0;
+    }
+  }
+  
+  /* Main content margin for sidebar */
+  @media (max-width: 1023px) {
+    .flex-1.ml-\[260px\] {
+      @apply ml-0;
+    }
+    
+    .glass-sidebar {
+      @apply fixed left-0 top-0 h-screen transform -translate-x-full;
+    }
+    
+    .glass-sidebar.open {
+      @apply translate-x-0;
+    }
   }
 }

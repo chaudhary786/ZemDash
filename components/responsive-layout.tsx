@@ -20,7 +20,7 @@ export function ResponsiveLayout({ children, className }: ResponsiveLayoutProps)
         className,
       )}
     >
-      <div className="flex min-h-screen w-full">{children}</div>
+      <div className="w-full min-h-screen">{children}</div>
     </div>
   )
 }
